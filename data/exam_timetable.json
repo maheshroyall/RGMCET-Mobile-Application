@@ -1,0 +1,11 @@
+{
+  "title": "B.Tech III Year I Semester Regular Examinations - Dec 2026",
+  "pdf": "pdfs/exam_timetable_III_I_dec2026.pdf",
+  "exams": [
+    { "date": "2026-12-14", "session": "Forenoon (10:00 AM - 1:00 PM)", "code": "CS501", "subject": "Database Management Systems" },
+    { "date": "2026-12-16", "session": "Forenoon (10:00 AM - 1:00 PM)", "code": "CS502", "subject": "Operating Systems" },
+    { "date": "2026-12-18", "session": "Forenoon (10:00 AM - 1:00 PM)", "code": "CS503", "subject": "Computer Networks" },
+    { "date": "2026-12-21", "session": "Forenoon (10:00 AM - 1:00 PM)", "code": "CS504", "subject": "Software Engineering" },
+    { "date": "2026-12-23", "session": "Forenoon (10:00 AM - 1:00 PM)", "code": "CS505", "subject": "Formal Languages and Automata Theory" }
+  ]
+}

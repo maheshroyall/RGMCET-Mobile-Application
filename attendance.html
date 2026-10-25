@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Attendance - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+  <main class="app-main" id="content"><div class="loading-box">Loading...</div></main>
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Attendance", active: "more", back: true });
+
+  async function start() {
+    var data = await getData("attendance");
+
+    // Add up the classes of all subjects
+    var held = 0;
+    var attended = 0;
+    for (var i = 0; i < data.subjects.length; i++) {
+      held = held + data.subjects[i].held;
+      attended = attended + data.subjects[i].attended;
+    }
+    var overall = Math.round((attended / held) * 100);
+
+    var html = '<div class="hero">' +
+                 '<small>Overall attendance - ' + esc(data.semester) + ' Semester</small>' +
+                 '<h2>' + overall + '%</h2>' +
+                 '<span class="hero-info">' + attended + ' of ' + held + ' classes</span>' +
+                 '<span class="hero-info">As on ' + formatDate(data.asOn) + '</span>' +
+               '</div>';
+
+    html += '<div class="section-title">Subject wise</div>';
+
+    for (var i = 0; i < data.subjects.length; i++) {
+      var s = data.subjects[i];
+      var percent = Math.round((s.attended / s.held) * 100);
+
+      // Green if safe, red if below the minimum
+      var barColor = "bg-success";
+      var note = "";
+      if (percent < data.minimumPercent) {
+        barColor = "bg-danger";
+        note = '<span class="badge text-bg-danger">Shortage</span>';
+      } else if (percent < data.minimumPercent + 5) {
+        barColor = "bg-warning";
+        note = '<span class="badge text-bg-warning">Careful</span>';
+      }
+
+      html += '<div class="card-lite">' +
+                '<div class="d-flex justify-content-between align-items-start mb-1">' +
+                  '<div class="fw-semibold">' + esc(s.subject) + '</div>' + note +
+                '</div>' +
+                '<div class="progress mb-1"><div class="progress-bar ' + barColor + '" style="width:' + percent + '%"></div></div>' +
+                '<div class="d-flex justify-content-between small text-muted">' +
+                  '<span>' + s.attended + ' / ' + s.held + ' classes</span><b>' + percent + '%</b>' +
+                '</div>' +
+              '</div>';
+    }
+
+    html += '<p class="small text-muted">Minimum attendance required: ' + data.minimumPercent + '%</p>';
+    document.getElementById("content").innerHTML = html;
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

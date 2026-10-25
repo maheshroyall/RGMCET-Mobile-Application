@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Internal Marks - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+  <main class="app-main" id="content"><div class="loading-box">Loading...</div></main>
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Internal Marks", active: "exams", back: true });
+
+  async function start() {
+    var data = await getData("internal_marks");
+
+    // Table
+    var rows = "";
+    for (var i = 0; i < data.subjects.length; i++) {
+      var s = data.subjects[i];
+      rows += '<tr>' +
+                '<td>' + esc(s.subject) + '</td>' +
+                '<td class="text-center">' + s.mid1 + '</td>' +
+                '<td class="text-center">' + s.mid2 + '</td>' +
+                '<td class="text-center">' + s.assignment + '</td>' +
+                '<td class="text-center"><b>' + s.total + '</b></td>' +
+              '</tr>';
+    }
+
+    var html = '<div class="card-lite">' +
+                 '<b>' + esc(data.semester) + ' Semester</b>' +
+                 '<div class="text-muted small">Marks entered by the faculty</div>' +
+               '</div>';
+
+    html += '<div class="table-box"><table class="table align-middle">' +
+              '<thead><tr>' +
+                '<th>Subject</th>' +
+                '<th class="text-center">Mid-I<br><small>/' + data.maxMid + '</small></th>' +
+                '<th class="text-center">Mid-II<br><small>/' + data.maxMid + '</small></th>' +
+                '<th class="text-center">Assign.<br><small>/' + data.maxAssignment + '</small></th>' +
+                '<th class="text-center">Total<br><small>/' + data.maxTotal + '</small></th>' +
+              '</tr></thead>' +
+              '<tbody>' + rows + '</tbody>' +
+            '</table></div>';
+
+    document.getElementById("content").innerHTML = html;
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

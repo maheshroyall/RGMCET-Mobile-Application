@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Home - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+  <main class="app-main" id="content"><div class="loading-box">Loading...</div></main>
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "RGMCET Smart Campus", active: "home", back: false });
+
+  // The tiles on the home page: name, icon, colour and the page it opens
+  var TILES = [
+    { name: "Circulars", icon: "bi-megaphone", color: "chip-blue", link: "circulars.html" },
+    { name: "Exams", icon: "bi-journal-check", color: "chip-red", link: "exams.html" },
+    { name: "Results", icon: "bi-award", color: "chip-green", link: "results.html" },
+    { name: "Internal Marks", icon: "bi-clipboard-data", color: "chip-purple", link: "marks.html" },
+    { name: "Fees", icon: "bi-wallet2", color: "chip-amber", link: "fees.html" },
+    { name: "Academic Calendar", icon: "bi-calendar3", color: "chip-teal", link: "calendar.html" },
+    { name: "Attendance", icon: "bi-person-check", color: "chip-green", link: "attendance.html" },
+    { name: "Hall Ticket", icon: "bi-ticket-perforated", color: "chip-amber", link: "hallticket.html" },
+    { name: "Departments", icon: "bi-buildings", color: "chip-blue", link: "departments.html" }
+  ];
+
+  async function start() {
+    var me = await getMyProfile();
+    var circulars = await getData("circulars");
+    var calendar = await getData("calendar");
+    var results = await getData("results");
+    var attendance = await getData("attendance");
+    var fees = await getData("fees");
+
+    // Total fee still to be paid
+    var feeDue = 0;
+    for (var i = 0; i < fees.dues.length; i++) {
+      feeDue = feeDue + (fees.dues[i].amount - fees.dues[i].paid);
+    }
+
+    // Overall attendance percentage
+    var held = 0;
+    var attended = 0;
+    for (var i = 0; i < attendance.subjects.length; i++) {
+      held = held + attendance.subjects[i].held;
+      attended = attended + attendance.subjects[i].attended;
+    }
+    var attendancePercent = Math.round((attended / held) * 100);
+
+    var html = "";
+
+    // Welcome card
+    html += '<div class="hero">' +
+              '<small>Welcome,</small>' +
+              '<h2>' + esc(me.name) + '</h2>' +
+              '<span class="hero-info">' + esc(me.roll) + '</span>' +
+              '<span class="hero-info">' + esc(me.department) + ' - ' + esc(me.year) + ' Year ' + esc(me.semester) + ' Sem</span>' +
+            '</div>';
+
+    // Three numbers
+    html += '<div class="row g-2 mt-1">' +
+              '<div class="col-4"><div class="stat-box"><div class="stat-number">' + results.cgpa + '</div><div class="stat-label">CGPA</div></div></div>' +
+              '<div class="col-4"><div class="stat-box"><div class="stat-number">' + attendancePercent + '%</div><div class="stat-label">Attendance</div></div></div>' +
+              '<div class="col-4"><div class="stat-box"><div class="stat-number">' + (feeDue > 0 ? "Rs. " + Math.round(feeDue / 1000) + "K" : "Nil") + '</div><div class="stat-label">Fee Due</div></div></div>' +
+            '</div>';
+
+    // Tiles
+    html += '<div class="section-title">Quick Access</div><div class="row g-2">';
+    for (var i = 0; i < TILES.length; i++) {
+      var t = TILES[i];
+      html += '<div class="col-4"><a class="tile" href="' + t.link + '">' +
+                '<div class="icon-chip ' + t.color + '"><i class="bi ' + t.icon + '"></i></div>' + t.name +
+              '</a></div>';
+    }
+    html += '</div>';
+
+    // Latest 3 circulars (the list in the file is already newest first)
+    html += '<div class="section-title">Latest Circulars</div>';
+    for (var i = 0; i < 3 && i < circulars.length; i++) {
+      var c = circulars[i];
+      html += '<a class="list-row" href="circulars.html">' +
+                '<div class="icon-chip chip-blue"><i class="bi bi-megaphone"></i></div>' +
+                '<div class="row-text"><div class="row-title">' + esc(c.title) + '</div>' +
+                '<div class="row-sub">' + formatDate(c.publishDate) + ' &middot; ' + esc(c.type) + '</div></div>' +
+                priorityBadge(c.priority) +
+              '</a>';
+    }
+
+    // Next 3 events from the academic calendar (dates from today onwards)
+    html += '<div class="section-title">Coming Up</div>';
+    var today = todayText();
+    var shown = 0;
+    for (var i = 0; i < calendar.events.length && shown < 3; i++) {
+      var e = calendar.events[i];
+      if (e.date >= today) {
+        html += '<a class="list-row" href="calendar.html">' +
+                  '<div class="icon-chip chip-teal"><i class="bi bi-calendar-event"></i></div>' +
+                  '<div class="row-text"><div class="row-title">' + esc(e.title) + '</div>' +
+                  '<div class="row-sub">' + formatDate(e.date) + ' &middot; ' + esc(e.type) + '</div></div>' +
+                '</a>';
+        shown++;
+      }
+    }
+    if (shown == 0) {
+      html += emptyBox("No upcoming events.");
+    }
+
+    document.getElementById("content").innerHTML = html;
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

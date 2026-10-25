@@ -1,0 +1,42 @@
+[
+  {
+    "roll": "23091A0512",
+    "password": "student123",
+    "name": "K. Ravi Teja",
+    "department": "CSE",
+    "year": "III",
+    "semester": "I",
+    "section": "B",
+    "regulation": "R23",
+    "dob": "2005-03-14",
+    "gender": "Male",
+    "category": "OC",
+    "email": "ravi.teja@example.com",
+    "mobile": "9876543210",
+    "address": "12-4-56, Gandhi Nagar, Nandyal, Andhra Pradesh - 518501",
+    "bloodGroup": "B+",
+    "parentName": "K. Srinivasulu",
+    "parentMobile": "9876500001",
+    "emergencyContact": "9876500002"
+  },
+  {
+    "roll": "23091A0421",
+    "password": "student123",
+    "name": "S. Anusha",
+    "department": "ECE",
+    "year": "III",
+    "semester": "I",
+    "section": "A",
+    "regulation": "R23",
+    "dob": "2005-07-02",
+    "gender": "Female",
+    "category": "BC-B",
+    "email": "anusha@example.com",
+    "mobile": "9876543211",
+    "address": "5-2-10, Srinivasa Nagar, Kurnool, Andhra Pradesh - 518002",
+    "bloodGroup": "O+",
+    "parentName": "S. Venkata Reddy",
+    "parentMobile": "9876500003",
+    "emergencyContact": "9876500004"
+  }
+]

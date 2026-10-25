@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Circulars - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+
+  <main class="app-main">
+    <!-- Search box -->
+    <input type="search" class="form-control mb-2" id="searchBox" placeholder="Search circulars...">
+
+    <!-- Filter buttons -->
+    <div class="pill-tabs" id="filterTabs"></div>
+
+    <!-- The list of circulars is shown here -->
+    <div id="content"><div class="loading-box">Loading...</div></div>
+  </main>
+
+  <div id="bottomnav"></div>
+</div>
+
+<!-- Details of one circular (opens when a circular is tapped) -->
+<div class="modal fade" id="circularModal" tabindex="-1">
+  <div class="modal-dialog sheet modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="modalNumber"></h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Circulars", active: "circulars", back: false });
+
+  var allCirculars = [];        // all circulars from the server
+  var currentFilter = "All";    // All, College, Department or Unread
+
+  var FILTERS = ["All", "College", "Department", "Unread"];
+
+  // Draws the filter buttons
+  function showFilters() {
+    var html = "";
+    for (var i = 0; i < FILTERS.length; i++) {
+      var activeClass = "";
+      if (FILTERS[i] == currentFilter) {
+        activeClass = " active";
+      }
+      html += '<button class="pill-tab' + activeClass + '" onclick="chooseFilter(\'' + FILTERS[i] + '\')">' + FILTERS[i] + '</button>';
+    }
+    document.getElementById("filterTabs").innerHTML = html;
+  }
+
+  function chooseFilter(name) {
+    currentFilter = name;
+    showFilters();
+    showList();
+  }
+
+  // Draws the list of circulars (after applying the filter and the search)
+  function showList() {
+    var search = document.getElementById("searchBox").value.toLowerCase();
+    var html = "";
+    var count = 0;
+
+    for (var i = 0; i < allCirculars.length; i++) {
+      var c = allCirculars[i];
+      var read = isRead("circular", c.id);
+
+      // Skip the circulars that do not match the filter
+      if (currentFilter == "College" && c.type != "College") { continue; }
+      if (currentFilter == "Department" && c.type != "Department") { continue; }
+      if (currentFilter == "Unread" && read == true) { continue; }
+
+      // Skip the circulars that do not match the search text
+      if (search != "" && c.title.toLowerCase().indexOf(search) == -1) { continue; }
+
+      var cardClass = "list-row circular-card";
+      if (c.priority == "Urgent") { cardClass += " urgent"; }
+      if (c.priority == "Important") { cardClass += " important"; }
+      if (read == false) { cardClass += " unread"; }
+
+      var typeText = c.type;
+      if (c.type == "Department") {
+        typeText = c.department + " Dept";
+      }
+
+      html += '<div class="' + cardClass + '" onclick="openCircular(' + c.id + ')">' +
+                '<div class="row-text">' +
+                  '<div class="row-title">' + esc(c.title) + '</div>' +
+                  '<div class="row-sub">' + formatDate(c.publishDate) + ' &middot; ' + esc(typeText) + '</div>' +
+                '</div>' +
+                priorityBadge(c.priority) +
+              '</div>';
+      count++;
+    }
+
+    if (count == 0) {
+      html = emptyBox("No circulars found.");
+    }
+    document.getElementById("content").innerHTML = html;
+  }
+
+  // Opens the details of one circular
+  function openCircular(id) {
+    var c = null;
+    for (var i = 0; i < allCirculars.length; i++) {
+      if (allCirculars[i].id == id) {
+        c = allCirculars[i];
+      }
+    }
+
+    markAsRead("circular", id);
+
+    document.getElementById("modalNumber").textContent = c.number;
+    document.getElementById("modalBody").innerHTML =
+      '<div class="mb-2">' + priorityBadge(c.priority) + ' <span class="badge text-bg-light border">' + esc(c.type) + '</span></div>' +
+      '<h5>' + esc(c.title) + '</h5>' +
+      '<p>' + esc(c.description) + '</p>' +
+      '<div class="info-row"><span class="info-label">Published</span><span class="info-value">' + formatDate(c.publishDate) + '</span></div>' +
+      '<div class="info-row"><span class="info-label">Effective from</span><span class="info-value">' + formatDate(c.effectiveDate) + '</span></div>' +
+      '<div class="info-row"><span class="info-label">Department</span><span class="info-value">' + esc(c.department) + '</span></div>' +
+      '<div class="info-row"><span class="info-label">Issued by</span><span class="info-value">' + esc(c.createdBy) + '</span></div>' +
+      '<div class="info-row"><span class="info-label">Approved by</span><span class="info-value">' + esc(c.approvedBy) + '</span></div>' +
+      '<div class="mt-3">' + fileButtons(c.attachment) + '</div>';
+
+    new bootstrap.Modal(document.getElementById("circularModal")).show();
+    showList();   // refresh the list so the "unread" dot disappears
+  }
+
+  async function start() {
+    allCirculars = await getData("circulars");
+    showFilters();
+    showList();
+  }
+
+  document.getElementById("searchBox").addEventListener("input", showList);
+  runPage(start);
+</script>
+</body>
+</html>

@@ -1,0 +1,449 @@
+/*
+  style.css  -  our own styles (Bootstrap is loaded before this file)
+
+  1. Colours (change the brand colours here)
+  2. Page layout (the phone-shaped column, top bar, bottom menu)
+  3. Cards, tiles and lists
+  4. Small parts (tabs, timeline, progress, empty box)
+  5. Login page
+  6. Printing (hall ticket)
+*/
+
+
+/* ---------- 1. COLOURS ---------- */
+:root {
+  --brand: #2a3990;          /* main blue */
+  --brand-dark: #1c2766;
+  --accent: #f2a900;         /* amber */
+  --page-bg: #f3f5fb;
+  --text: #1d2340;
+  --muted: #6b7280;
+  --line: #e4e8f2;
+
+  /* tell Bootstrap to use our brand colour for .btn-primary, .text-primary etc. */
+  --bs-primary: #2a3990;
+  --bs-primary-rgb: 42, 57, 144;
+  --bs-link-color: #2a3990;
+  --bs-link-hover-color: #1c2766;
+}
+
+.btn-primary {
+  --bs-btn-bg: #2a3990;
+  --bs-btn-border-color: #2a3990;
+  --bs-btn-hover-bg: #1c2766;
+  --bs-btn-hover-border-color: #1c2766;
+  --bs-btn-active-bg: #1c2766;
+  --bs-btn-active-border-color: #1c2766;
+  --bs-btn-disabled-bg: #2a3990;
+  --bs-btn-disabled-border-color: #2a3990;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: #2a3990;
+  --bs-btn-border-color: #2a3990;
+  --bs-btn-hover-bg: #2a3990;
+  --bs-btn-hover-border-color: #2a3990;
+  --bs-btn-active-bg: #2a3990;
+  --bs-btn-active-border-color: #2a3990;
+}
+
+.text-primary { color: #2a3990 !important; }
+.form-control:focus, .form-select:focus {
+  border-color: #2a3990;
+  box-shadow: 0 0 0 0.2rem rgba(42, 57, 144, 0.15);
+}
+
+
+/* ---------- 2. PAGE LAYOUT ---------- */
+body {
+  background: #dfe3f0;
+  color: var(--text);
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+}
+
+/* The app is a column that is at most 520px wide, so it looks like a phone on a computer */
+.app-shell {
+  max-width: 520px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--page-bg);
+  position: relative;
+  box-shadow: 0 0 30px rgba(20, 30, 80, 0.12);
+}
+
+.app-main {
+  padding: 16px 16px 96px 16px;   /* extra space at the bottom for the bottom menu */
+}
+
+/* Top bar */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--brand);
+  color: #fff;
+}
+.bar-title {
+  flex: 1;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bar-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+}
+.bar-button {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.bell-count {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: #e5384f;
+  color: #fff;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+
+/* Bottom menu */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 520px;
+  z-index: 20;
+  display: flex;
+  background: #fff;
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);   /* keeps it above the phone's home bar */
+}
+.bottom-item {
+  flex: 1;
+  padding: 8px 0 7px 0;
+  text-align: center;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 11px;
+}
+.bottom-item i {
+  display: block;
+  font-size: 21px;
+  line-height: 24px;
+}
+.bottom-item.active {
+  color: var(--brand);
+  font-weight: 600;
+}
+.bottom-item.active i {
+  background: rgba(42, 57, 144, 0.1);
+  border-radius: 12px;
+  width: 52px;
+  margin: 0 auto;
+}
+
+
+/* ---------- 3. CARDS, TILES AND LISTS ---------- */
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 22px 0 10px 0;
+}
+
+.card-lite {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+/* Big blue welcome card on the home page */
+.hero {
+  background: linear-gradient(135deg, #2a3990 0%, #3f52c4 100%);
+  color: #fff;
+  border-radius: 20px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -34px;
+  top: -34px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.9;
+}
+.hero > * { position: relative; z-index: 1; }
+.hero small { opacity: 0.8; }
+.hero h2 { font-size: 22px; margin: 2px 0 10px 0; padding-right: 36px; }
+.hero .hero-info {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 13px;
+  margin: 0 6px 4px 0;
+}
+
+/* Square tiles (Circulars, Exams, ...) */
+.tile {
+  display: block;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px 8px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
+  height: 100%;
+  font-size: 13px;
+  font-weight: 500;
+}
+.tile:active { background: #eef1fb; }
+
+/* Round icon with a soft coloured background */
+.icon-chip {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  margin: 0 auto 6px auto;
+}
+.tile .icon-chip { margin-bottom: 8px; }
+.chip-blue   { background: #e5e9fb; color: #2a3990; }
+.chip-amber  { background: #fff1cc; color: #a87400; }
+.chip-green  { background: #dcf3e5; color: #1b7a43; }
+.chip-red    { background: #fde0e4; color: #c22a43; }
+.chip-teal   { background: #d9f1f3; color: #0b7a85; }
+.chip-purple { background: #ece3fa; color: #6a3fb5; }
+
+/* A row inside a card: icon on the left, text in the middle, something on the right */
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: var(--text);
+}
+.list-row .icon-chip { margin: 0; flex-shrink: 0; }
+.list-row .row-text { flex: 1; min-width: 0; }
+.list-row .row-title { font-weight: 600; line-height: 1.3; }
+.list-row .row-sub { font-size: 13px; color: var(--muted); }
+.list-row .bi-chevron-right { color: #aab0c4; }
+
+/* Circular card with a coloured left edge */
+.circular-card { border-left: 5px solid #b8bfd6; cursor: pointer; }
+.circular-card.urgent { border-left-color: #dc3545; }
+.circular-card.important { border-left-color: var(--accent); }
+.circular-card.unread .row-title::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--brand);
+  margin-right: 6px;
+}
+
+.stat-box {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+  text-align: center;
+}
+.stat-box .stat-number { font-size: 22px; font-weight: 700; color: var(--brand); }
+.stat-box .stat-label { font-size: 12px; color: var(--muted); }
+
+
+/* ---------- 4. SMALL PARTS ---------- */
+
+/* Row of filter buttons that scrolls sideways on small phones */
+.pill-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  scrollbar-width: none;
+}
+.pill-tabs::-webkit-scrollbar { display: none; }
+.pill-tab {
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+}
+.pill-tab.active {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+.empty-box {
+  text-align: center;
+  color: var(--muted);
+  padding: 40px 20px;
+}
+.empty-box i { font-size: 40px; display: block; margin-bottom: 6px; }
+
+.loading-box { text-align: center; padding: 50px 0; color: var(--muted); }
+
+.progress { height: 8px; border-radius: 4px; }
+
+/* Table that scrolls sideways if it is too wide */
+.table-box {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow-x: auto;
+}
+.table-box table { margin: 0; font-size: 14px; }
+.table-box th { background: #eef1fb; color: var(--brand-dark); font-weight: 600; white-space: nowrap; }
+
+/* Vertical steps (used for discipline status) */
+.timeline { list-style: none; padding: 0; margin: 0; }
+.timeline li {
+  position: relative;
+  padding: 0 0 14px 26px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #cfd5e8;
+}
+.timeline li::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 18px;
+  bottom: 0;
+  width: 2px;
+  background: #e1e5f1;
+}
+.timeline li:last-child::after { display: none; }
+.timeline li.done { color: var(--text); }
+.timeline li.done::before { background: #1b9a55; }
+.timeline li.now { color: var(--brand); font-weight: 600; }
+.timeline li.now::before { background: var(--brand); }
+
+/* Profile picture circle with initials */
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--brand-dark);
+  font-size: 26px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px auto;
+}
+
+/* Label and value pairs (profile page) */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.info-row:last-child { border-bottom: none; }
+.info-row .info-label { color: var(--muted); }
+.info-row .info-value { text-align: right; font-weight: 500; }
+
+.event-photo { width: 100%; border-radius: 12px; margin-bottom: 8px; }
+
+/* Modal that slides up from the bottom like a phone sheet */
+.modal-dialog.sheet {
+  margin: 0 auto;
+  max-width: 520px;
+  min-height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+.modal-dialog.sheet .modal-content { border-radius: 22px 22px 0 0; border: none; width: 100%; }
+
+
+/* ---------- 5. LOGIN PAGE ---------- */
+.login-top {
+  background: linear-gradient(160deg, #1c2766 0%, #2a3990 60%, #3f52c4 100%);
+  color: #fff;
+  text-align: center;
+  padding: 56px 20px 70px 20px;
+  border-radius: 0 0 40px 40px;
+}
+.login-top img { width: 78px; height: 78px; border-radius: 20px; margin-bottom: 12px; }
+.login-top h1 { font-size: 24px; margin: 0; }
+.login-top p { margin: 4px 0 0 0; opacity: 0.8; }
+.login-card {
+  margin: -36px 20px 0 20px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(30, 40, 100, 0.12);
+}
+
+
+/* ---------- 6. PRINTING (hall ticket) ---------- */
+@media print {
+  .app-bar, .bottom-nav, .no-print { display: none !important; }
+  body { background: #fff; }
+  .app-shell { box-shadow: none; max-width: 100%; }
+  .app-main { padding: 0; }
+}

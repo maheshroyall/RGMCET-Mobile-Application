@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Hall Ticket - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+  <main class="app-main" id="content"><div class="loading-box">Loading...</div></main>
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Hall Ticket", active: "exams", back: true });
+
+  async function start() {
+    var ticket = await getData("hallticket");
+    var me = await getMyProfile();
+
+    // If the hall ticket is not released yet
+    if (ticket.available == false) {
+      document.getElementById("content").innerHTML =
+        emptyBox("Your hall ticket is not released yet. You will get a notification when it is ready.");
+      return;
+    }
+
+    var rows = "";
+    for (var i = 0; i < ticket.subjects.length; i++) {
+      var s = ticket.subjects[i];
+      rows += '<tr><td>' + formatDate(s.date) + '<div class="text-muted small">' + esc(s.session) + '</div></td>' +
+              '<td>' + esc(s.name) + '<div class="text-muted small">' + esc(s.code) + '</div></td></tr>';
+    }
+
+    var instructions = "";
+    for (var i = 0; i < ticket.instructions.length; i++) {
+      instructions += '<li>' + esc(ticket.instructions[i]) + '</li>';
+    }
+
+    var html = '<div class="card-lite">' +
+                 '<div class="text-center border-bottom pb-2 mb-2">' +
+                   '<div class="fw-bold text-primary">RGM College of Engineering and Technology</div>' +
+                   '<div class="small">HALL TICKET</div>' +
+                   '<div class="small text-muted">' + esc(ticket.examName) + '</div>' +
+                 '</div>' +
+                 '<div class="info-row"><span class="info-label">Name</span><span class="info-value">' + esc(me.name) + '</span></div>' +
+                 '<div class="info-row"><span class="info-label">Roll Number</span><span class="info-value">' + esc(me.roll) + '</span></div>' +
+                 '<div class="info-row"><span class="info-label">Branch</span><span class="info-value">' + esc(me.department) + '</span></div>' +
+                 '<div class="info-row"><span class="info-label">Year / Sem</span><span class="info-value">' + esc(me.year) + ' / ' + esc(me.semester) + '</span></div>' +
+                 '<div class="info-row"><span class="info-label">Exam Centre</span><span class="info-value">' + esc(ticket.centre) + '</span></div>' +
+               '</div>';
+
+    html += '<div class="table-box mb-3"><table class="table table-sm align-middle">' +
+              '<thead><tr><th>Date</th><th>Subject</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+
+    html += '<div class="card-lite"><b>Instructions</b><ul class="small mt-2 mb-0 ps-3">' + instructions + '</ul></div>';
+
+    html += '<div class="d-flex gap-2 no-print">' +
+              '<button class="btn btn-outline-primary flex-fill" onclick="window.print()"><i class="bi bi-printer"></i> Print</button>' +
+              '<a class="btn btn-primary flex-fill" href="' + esc(ticket.pdf) + '" download><i class="bi bi-download"></i> Download PDF</a>' +
+            '</div>';
+
+    document.getElementById("content").innerHTML = html;
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

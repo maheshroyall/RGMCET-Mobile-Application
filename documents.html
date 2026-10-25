@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Documents - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+
+  <main class="app-main">
+    <input type="search" class="form-control mb-2" id="searchBox" placeholder="Search documents...">
+    <div class="pill-tabs" id="filterTabs"></div>
+    <div id="content"><div class="loading-box">Loading...</div></div>
+  </main>
+
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Documents", active: "more", back: true });
+
+  var documents = [];
+  var currentFolder = "All";
+  var FOLDERS = ["All", "Circulars", "Regulations", "Academic Calendar", "Timetables", "Results", "Fee Receipts", "Department Documents", "Examination Documents", "Examination Forms"];
+
+  // Icon for each file type
+  var TYPE_ICON = {
+    "PDF": { color: "chip-red", icon: "bi-file-earmark-pdf" },
+    "JPG": { color: "chip-green", icon: "bi-file-earmark-image" },
+    "PNG": { color: "chip-green", icon: "bi-file-earmark-image" },
+    "DOCX": { color: "chip-blue", icon: "bi-file-earmark-word" },
+    "DOC": { color: "chip-blue", icon: "bi-file-earmark-word" }
+  };
+
+  function showFilters() {
+    var html = "";
+    for (var i = 0; i < FOLDERS.length; i++) {
+      var activeClass = "";
+      if (FOLDERS[i] == currentFolder) {
+        activeClass = " active";
+      }
+      html += '<button class="pill-tab' + activeClass + '" onclick="chooseFolder(\'' + FOLDERS[i] + '\')">' + FOLDERS[i] + '</button>';
+    }
+    document.getElementById("filterTabs").innerHTML = html;
+  }
+
+  function chooseFolder(name) {
+    currentFolder = name;
+    showFilters();
+    showList();
+  }
+
+  function showList() {
+    var search = document.getElementById("searchBox").value.toLowerCase();
+    var html = "";
+
+    for (var i = 0; i < documents.length; i++) {
+      var d = documents[i];
+      if (currentFolder != "All" && d.folder != currentFolder) { continue; }
+      if (search != "" && d.title.toLowerCase().indexOf(search) == -1) { continue; }
+
+      var style = TYPE_ICON[d.type] || TYPE_ICON["PDF"];
+      html += '<div class="list-row">' +
+                '<div class="icon-chip ' + style.color + '"><i class="bi ' + style.icon + '"></i></div>' +
+                '<div class="row-text">' +
+                  '<div class="row-title">' + esc(d.title) + '</div>' +
+                  '<div class="row-sub">' + esc(d.folder) + ' &middot; ' + esc(d.type) + ' &middot; ' + esc(d.size) + '</div>' +
+                '</div>' +
+                '<a class="btn btn-sm btn-outline-primary" href="' + esc(d.file) + '" target="_blank" aria-label="View"><i class="bi bi-eye"></i></a>' +
+                '<a class="btn btn-sm btn-primary" href="' + esc(d.file) + '" download aria-label="Download"><i class="bi bi-download"></i></a>' +
+              '</div>';
+    }
+
+    if (html == "") {
+      html = emptyBox("No documents found.");
+    }
+    document.getElementById("content").innerHTML = html;
+  }
+
+  async function start() {
+    documents = await getData("documents");
+
+    // The page address can ask for one folder: documents.html?folder=Examination Forms
+    var wanted = getParam("folder");
+    if (FOLDERS.indexOf(wanted) != -1) {
+      currentFolder = wanted;
+    }
+
+    showFilters();
+    showList();
+  }
+
+  document.getElementById("searchBox").addEventListener("input", showList);
+  runPage(start);
+</script>
+</body>
+</html>

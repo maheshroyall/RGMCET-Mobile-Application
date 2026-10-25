@@ -1,0 +1,20 @@
+{
+  "year": "2026-27",
+  "pdf": "pdfs/academic_calendar_2026_27.pdf",
+  "events": [
+    { "date": "2026-08-03", "title": "Commencement of III Year I Semester", "type": "Academic" },
+    { "date": "2026-08-15", "title": "Independence Day", "type": "Holiday" },
+    { "date": "2026-09-14", "title": "Vinayaka Chavithi", "type": "Holiday" },
+    { "date": "2026-09-21", "title": "Mid-I Examinations begin", "type": "Exam" },
+    { "date": "2026-09-26", "title": "Mid-I Examinations end", "type": "Exam" },
+    { "date": "2026-10-02", "title": "Gandhi Jayanti", "type": "Holiday" },
+    { "date": "2026-10-19", "title": "Dussehra Holidays begin", "type": "Holiday" },
+    { "date": "2026-10-30", "title": "Last date for college fee payment", "type": "Academic" },
+    { "date": "2026-11-12", "title": "Industrial Visit (CSE)", "type": "Event" },
+    { "date": "2026-11-23", "title": "Mid-II Examinations begin", "type": "Exam" },
+    { "date": "2026-11-28", "title": "Mid-II Examinations end", "type": "Exam" },
+    { "date": "2026-12-12", "title": "Last working day of the semester", "type": "Academic" },
+    { "date": "2026-12-14", "title": "Semester End Examinations begin", "type": "Exam" },
+    { "date": "2026-12-25", "title": "Christmas", "type": "Holiday" }
+  ]
+}

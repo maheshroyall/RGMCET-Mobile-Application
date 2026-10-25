@@ -1,0 +1,7 @@
+[
+  { "code": "CIVIL", "name": "Civil Engineering", "icon": "bi-building", "hod": "Dr. P. Ramesh Babu", "about": "Structural, geotechnical, transportation and environmental engineering." },
+  { "code": "EEE", "name": "Electrical and Electronics Engineering", "icon": "bi-lightning-charge", "hod": "Dr. M. Sudhakar", "about": "Power systems, electrical machines, control systems and renewable energy." },
+  { "code": "MECH", "name": "Mechanical Engineering", "icon": "bi-gear", "hod": "Dr. T. Narasimha Rao", "about": "Thermal engineering, design, manufacturing and robotics." },
+  { "code": "ECE", "name": "Electronics and Communication Engineering", "icon": "bi-cpu", "hod": "Dr. K. Lakshmi Devi", "about": "VLSI, embedded systems, communications and signal processing." },
+  { "code": "CSE", "name": "Computer Science and Engineering", "icon": "bi-laptop", "hod": "Dr. B. Suresh Kumar", "about": "Programming, databases, networks, artificial intelligence and software engineering." }
+]

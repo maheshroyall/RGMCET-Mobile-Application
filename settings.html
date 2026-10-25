@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Settings - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+
+  <main class="app-main">
+    <div id="content"></div>
+
+    <div class="section-title">Install App</div>
+    <div class="card-lite">
+      <p class="small mb-2" id="installText">Add this app to your home screen to open it like a normal app.</p>
+      <button class="btn btn-primary w-100 d-none" id="installButton"><i class="bi bi-phone"></i> Install App</button>
+      <p class="small text-muted mb-0 mt-2">iPhone: tap the Share button in Safari, then "Add to Home Screen".</p>
+    </div>
+
+    <div class="section-title">Data on this phone</div>
+    <div class="card-lite">
+      <p class="small mb-2">Clears the "read" marks of circulars and notifications saved on this phone.</p>
+      <button class="btn btn-outline-primary w-100" onclick="clearReadMarks()">Clear read marks</button>
+    </div>
+
+    <div class="section-title">Account</div>
+    <button class="btn btn-danger w-100" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+
+    <p class="text-center text-muted small mt-4">RGMCET Smart Campus &middot; Version 1.0</p>
+  </main>
+
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Settings", active: "more", back: true });
+
+  // ----- Install button (Android Chrome) -----
+  var installEvent = null;
+
+  window.addEventListener("beforeinstallprompt", function (event) {
+    event.preventDefault();      // keep the event so we can use it when the button is pressed
+    installEvent = event;
+    document.getElementById("installButton").classList.remove("d-none");
+  });
+
+  document.getElementById("installButton").addEventListener("click", async function () {
+    if (installEvent != null) {
+      installEvent.prompt();
+      installEvent = null;
+      document.getElementById("installButton").classList.add("d-none");
+    }
+  });
+
+  // ----- Clear the read marks -----
+  function clearReadMarks() {
+    var roll = getLoggedInRoll();
+    localStorage.removeItem("rgmcet_read_circular_" + roll);
+    localStorage.removeItem("rgmcet_read_notification_" + roll);
+    alert("Done. All circulars and notifications are unread again.");
+  }
+
+  // ----- Logout -----
+  function logout() {
+    logoutStudent();
+    window.location.href = "index.html";
+  }
+
+  // ----- Show who is logged in -----
+  async function start() {
+    var me = await getMyProfile();
+    document.getElementById("content").innerHTML =
+      '<a class="list-row" href="profile.html">' +
+        '<div class="icon-chip chip-blue"><b>' + initials(me.name) + '</b></div>' +
+        '<div class="row-text"><div class="row-title">' + esc(me.name) + '</div>' +
+        '<div class="row-sub">' + esc(me.roll) + ' &middot; ' + esc(me.department) + '</div></div>' +
+        '<i class="bi bi-chevron-right"></i>' +
+      '</a>';
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

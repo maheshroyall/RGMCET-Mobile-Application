@@ -1,0 +1,13 @@
+{
+  "semester": "III-I",
+  "asOn": "2026-10-21",
+  "minimumPercent": 75,
+  "subjects": [
+    { "subject": "Database Management Systems", "held": 40, "attended": 36 },
+    { "subject": "Operating Systems", "held": 38, "attended": 31 },
+    { "subject": "Computer Networks", "held": 36, "attended": 25 },
+    { "subject": "Software Engineering", "held": 34, "attended": 33 },
+    { "subject": "Formal Languages and Automata Theory", "held": 30, "attended": 21 },
+    { "subject": "DBMS Lab", "held": 12, "attended": 12 }
+  ]
+}

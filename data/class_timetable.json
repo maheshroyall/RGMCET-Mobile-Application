@@ -1,0 +1,12 @@
+{
+  "title": "III Year I Semester - CSE B Section",
+  "periods": ["9:00-9:50", "9:50-10:40", "10:50-11:40", "11:40-12:30", "1:30-2:20", "2:20-3:10", "3:10-4:00"],
+  "days": [
+    { "day": "Monday", "classes": ["DBMS", "OS", "CN", "SE", "Lunch", "FLAT", "FLAT"] },
+    { "day": "Tuesday", "classes": ["OS", "DBMS", "SE", "CN", "Lunch", "DBMS Lab", "DBMS Lab"] },
+    { "day": "Wednesday", "classes": ["CN", "FLAT", "DBMS", "OS", "Lunch", "SE", "Library"] },
+    { "day": "Thursday", "classes": ["SE", "CN", "OS", "DBMS", "Lunch", "OS Lab", "OS Lab"] },
+    { "day": "Friday", "classes": ["FLAT", "SE", "CN", "OS", "Lunch", "DBMS", "Sports"] },
+    { "day": "Saturday", "classes": ["DBMS", "CN", "Seminar", "Seminar", "Lunch", "Mentoring", "Mentoring"] }
+  ]
+}

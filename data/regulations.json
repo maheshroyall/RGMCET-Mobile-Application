@@ -1,0 +1,7 @@
+[
+  { "code": "R25", "appliesTo": "Students admitted from 2025-26", "title": "Academic Regulations R25 - B.Tech", "pdf": "pdfs/regulations_R25.pdf" },
+  { "code": "R23", "appliesTo": "Students admitted in 2023-24 and 2024-25", "title": "Academic Regulations R23 - B.Tech", "pdf": "pdfs/regulations_R23.pdf" },
+  { "code": "R20", "appliesTo": "Students admitted from 2020-21 to 2022-23", "title": "Academic Regulations R20 - B.Tech", "pdf": "pdfs/regulations_R20.pdf" },
+  { "code": "R19", "appliesTo": "Students admitted in 2019-20", "title": "Academic Regulations R19 - B.Tech", "pdf": "pdfs/regulations_R19.pdf" },
+  { "code": "R16", "appliesTo": "Students admitted from 2016-17 to 2018-19", "title": "Academic Regulations R16 - B.Tech", "pdf": "pdfs/regulations_R16.pdf" }
+]

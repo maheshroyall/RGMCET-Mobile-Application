@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>More - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+  <main class="app-main" id="content"></main>
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "More", active: "more", back: false });
+
+  // Every section of the app. To add a new page to the menu, add one line here.
+  var SECTIONS = [
+    {
+      title: "Academics",
+      items: [
+        { name: "My Profile", icon: "bi-person-circle", color: "chip-blue", link: "profile.html" },
+        { name: "Class Timetable", icon: "bi-clock", color: "chip-teal", link: "classes.html" },
+        { name: "Attendance", icon: "bi-person-check", color: "chip-green", link: "attendance.html" },
+        { name: "Academic Calendar", icon: "bi-calendar3", color: "chip-amber", link: "calendar.html" },
+        { name: "Regulations", icon: "bi-book", color: "chip-red", link: "regulations.html" },
+        { name: "Internal Marks", icon: "bi-clipboard-data", color: "chip-purple", link: "marks.html" }
+      ]
+    },
+    {
+      title: "Examinations",
+      items: [
+        { name: "Exam Timetable", icon: "bi-table", color: "chip-blue", link: "timetable.html" },
+        { name: "Hall Ticket", icon: "bi-ticket-perforated", color: "chip-amber", link: "hallticket.html" },
+        { name: "Results", icon: "bi-award", color: "chip-green", link: "results.html" },
+        { name: "Exam Forms", icon: "bi-file-earmark-arrow-down", color: "chip-red", link: "documents.html?folder=Examination Forms" }
+      ]
+    },
+    {
+      title: "Campus",
+      items: [
+        { name: "Departments", icon: "bi-buildings", color: "chip-blue", link: "departments.html" },
+        { name: "Discipline", icon: "bi-shield-check", color: "chip-green", link: "discipline.html" },
+        { name: "Documents", icon: "bi-folder2-open", color: "chip-amber", link: "documents.html" },
+        { name: "Notifications", icon: "bi-bell", color: "chip-red", link: "notifications.html" }
+      ]
+    },
+    {
+      title: "Student Services",
+      items: [
+        { name: "Certificates", icon: "bi-patch-check", color: "chip-teal", link: "services.html?tab=Certificates" },
+        { name: "Grievance", icon: "bi-chat-left-text", color: "chip-red", link: "services.html?tab=Grievance" },
+        { name: "Help Desk", icon: "bi-headset", color: "chip-blue", link: "services.html?tab=Help Desk" },
+        { name: "Feedback", icon: "bi-star", color: "chip-amber", link: "services.html?tab=Feedback" }
+      ]
+    },
+    {
+      title: "App",
+      items: [
+        { name: "Settings", icon: "bi-gear", color: "chip-purple", link: "settings.html" }
+      ]
+    }
+  ];
+
+  var html = "";
+  for (var i = 0; i < SECTIONS.length; i++) {
+    html += '<div class="section-title' + (i == 0 ? ' mt-0' : '') + '">' + SECTIONS[i].title + '</div><div class="row g-2">';
+    for (var j = 0; j < SECTIONS[i].items.length; j++) {
+      var item = SECTIONS[i].items[j];
+      html += '<div class="col-4"><a class="tile" href="' + item.link + '">' +
+                '<div class="icon-chip ' + item.color + '"><i class="bi ' + item.icon + '"></i></div>' + item.name +
+              '</a></div>';
+    }
+    html += '</div>';
+  }
+  document.getElementById("content").innerHTML = html;
+</script>
+</body>
+</html>

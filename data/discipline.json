@@ -1,0 +1,17 @@
+[
+  {
+    "caseId": "DISC-2026-014",
+    "date": "2026-09-16",
+    "department": "CSE",
+    "incidentType": "Not wearing ID card",
+    "description": "Student was found on campus without the college ID card.",
+    "reportedBy": "Security Office",
+    "hodRemarks": "First time. Student was counselled.",
+    "committeeRemarks": "A warning is sufficient.",
+    "actionTaken": "Written warning",
+    "status": "Closed",
+    "reviewDate": "2026-09-20",
+    "closureDate": "2026-09-22",
+    "document": "pdfs/discipline_notice_001.pdf"
+  }
+]

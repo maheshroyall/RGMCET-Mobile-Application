@@ -1,0 +1,11 @@
+[
+  { "id": 1, "department": "CSE", "name": "Dr. B. Suresh Kumar", "designation": "Professor and HOD", "qualification": "Ph.D (CSE)", "email": "suresh.kumar@example.com", "research": "Machine Learning, Data Mining" },
+  { "id": 2, "department": "CSE", "name": "Dr. N. Hema Latha", "designation": "Professor", "qualification": "Ph.D (CSE)", "email": "hema.latha@example.com", "research": "Computer Networks, IoT" },
+  { "id": 3, "department": "CSE", "name": "Mr. G. Praveen", "designation": "Associate Professor", "qualification": "M.Tech (CSE)", "email": "praveen@example.com", "research": "Databases, Cloud Computing" },
+  { "id": 4, "department": "CSE", "name": "Ms. R. Sravani", "designation": "Assistant Professor", "qualification": "M.Tech (CSE)", "email": "sravani@example.com", "research": "Software Engineering" },
+  { "id": 5, "department": "ECE", "name": "Dr. K. Lakshmi Devi", "designation": "Professor and HOD", "qualification": "Ph.D (ECE)", "email": "lakshmi.devi@example.com", "research": "VLSI Design" },
+  { "id": 6, "department": "ECE", "name": "Mr. V. Chaitanya", "designation": "Assistant Professor", "qualification": "M.Tech (ECE)", "email": "chaitanya@example.com", "research": "Embedded Systems" },
+  { "id": 7, "department": "EEE", "name": "Dr. M. Sudhakar", "designation": "Professor and HOD", "qualification": "Ph.D (EEE)", "email": "sudhakar@example.com", "research": "Power Systems" },
+  { "id": 8, "department": "MECH", "name": "Dr. T. Narasimha Rao", "designation": "Professor and HOD", "qualification": "Ph.D (Mechanical)", "email": "narasimha@example.com", "research": "Thermal Engineering" },
+  { "id": 9, "department": "CIVIL", "name": "Dr. P. Ramesh Babu", "designation": "Professor and HOD", "qualification": "Ph.D (Civil)", "email": "ramesh.babu@example.com", "research": "Structural Engineering" }
+]

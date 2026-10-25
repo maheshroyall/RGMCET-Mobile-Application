@@ -1,0 +1,13 @@
+{
+  "semester": "III-I",
+  "maxMid": 20,
+  "maxAssignment": 10,
+  "maxTotal": 50,
+  "subjects": [
+    { "subject": "Database Management Systems", "mid1": 18, "mid2": 19, "assignment": 9, "total": 46 },
+    { "subject": "Operating Systems", "mid1": 15, "mid2": 17, "assignment": 8, "total": 40 },
+    { "subject": "Computer Networks", "mid1": 16, "mid2": 14, "assignment": 9, "total": 39 },
+    { "subject": "Software Engineering", "mid1": 17, "mid2": 18, "assignment": 10, "total": 45 },
+    { "subject": "Formal Languages and Automata Theory", "mid1": 12, "mid2": 13, "assignment": 8, "total": 33 }
+  ]
+}

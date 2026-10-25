@@ -1,0 +1,8 @@
+[
+  { "id": 1, "department": "CSE", "category": "Hackathon", "who": "Student", "title": "Winners of Smart India Hackathon (Software Edition)", "name": "Team Byte Force (CSE)", "date": "2026-08-30", "description": "Our CSE team won the national level hackathon among 500 teams." },
+  { "id": 2, "department": "CSE", "category": "Publication", "who": "Faculty", "title": "Research paper published in an international journal", "name": "Dr. N. Hema Latha", "date": "2026-09-10", "description": "Paper on IoT based smart campus published in a Scopus indexed journal." },
+  { "id": 3, "department": "ECE", "category": "Technical Competition", "who": "Student", "title": "First prize in Circuit Debugging Contest", "name": "S. Anusha (ECE)", "date": "2026-09-22", "description": "First prize at the inter-college technical fest." },
+  { "id": 4, "department": "MECH", "category": "Sports", "who": "Student", "title": "Gold medal in Inter-University Kabaddi", "name": "M. Harish (Mechanical)", "date": "2026-10-01", "description": "Represented the university team and won gold." },
+  { "id": 5, "department": "EEE", "category": "Award", "who": "Faculty", "title": "Best Teacher Award", "name": "Dr. M. Sudhakar", "date": "2026-09-05", "description": "Received the Best Teacher Award on Teachers Day." },
+  { "id": 6, "department": "CIVIL", "category": "Technical Competition", "who": "Student", "title": "Second prize in Bridge Design Contest", "name": "Team Structura (Civil)", "date": "2026-10-12", "description": "Second prize at a state level bridge design contest." }
+]

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Student Services - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+
+  <main class="app-main">
+    <div class="pill-tabs" id="tabs"></div>
+    <div id="message"></div>
+    <div id="content"><div class="loading-box">Loading...</div></div>
+  </main>
+
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Student Services", active: "more", back: true });
+
+  var services = null;
+  var currentTab = "Certificates";
+  var TABS = ["Certificates", "Grievance", "Feedback", "Help Desk", "My Requests"];
+
+  function showTabs() {
+    var html = "";
+    for (var i = 0; i < TABS.length; i++) {
+      var activeClass = "";
+      if (TABS[i] == currentTab) {
+        activeClass = " active";
+      }
+      html += '<button class="pill-tab' + activeClass + '" onclick="chooseTab(\'' + TABS[i] + '\')">' + TABS[i] + '</button>';
+    }
+    document.getElementById("tabs").innerHTML = html;
+  }
+
+  function chooseTab(name) {
+    currentTab = name;
+    document.getElementById("message").innerHTML = "";
+    showTabs();
+    showTabContent();
+  }
+
+  // Shows the form or list of the selected tab
+  function showTabContent() {
+    var html = "";
+
+    if (currentTab == "Certificates") {
+      var options = "";
+      for (var i = 0; i < services.certificates.length; i++) {
+        var c = services.certificates[i];
+        options += '<option value="' + esc(c.name) + '">' + esc(c.name) + ' (Rs. ' + c.fee + ', ' + c.days + ' days)</option>';
+      }
+      html = '<form id="certificateForm" class="card-lite">' +
+               '<h6>Request a Certificate</h6>' +
+               '<div class="mb-3"><label class="form-label">Certificate</label><select class="form-select" id="certName" required>' + options + '</select></div>' +
+               '<div class="mb-3"><label class="form-label">Purpose</label><input type="text" class="form-control" id="certPurpose" placeholder="Example: Passport, Scholarship" required></div>' +
+               '<button type="submit" class="btn btn-primary w-100">Submit Request</button>' +
+             '</form>';
+    }
+
+    if (currentTab == "Grievance") {
+      var options = "";
+      for (var i = 0; i < services.grievanceTypes.length; i++) {
+        options += '<option>' + esc(services.grievanceTypes[i]) + '</option>';
+      }
+      html = '<form id="grievanceForm" class="card-lite">' +
+               '<h6>Submit a Grievance</h6>' +
+               '<div class="mb-3"><label class="form-label">Type</label><select class="form-select" id="grvType">' + options + '</select></div>' +
+               '<div class="mb-3"><label class="form-label">Subject</label><input type="text" class="form-control" id="grvSubject" required></div>' +
+               '<div class="mb-3"><label class="form-label">Details</label><textarea class="form-control" id="grvDetails" rows="4" required></textarea></div>' +
+               '<button type="submit" class="btn btn-primary w-100">Submit Grievance</button>' +
+             '</form>';
+    }
+
+    if (currentTab == "Feedback") {
+      html = '<form id="feedbackForm" class="card-lite">' +
+               '<h6>Give Feedback</h6>' +
+               '<div class="mb-3"><label class="form-label">Rating</label>' +
+                 '<select class="form-select" id="fbRating">' +
+                   '<option value="5">5 - Excellent</option><option value="4">4 - Good</option><option value="3">3 - Average</option>' +
+                   '<option value="2">2 - Poor</option><option value="1">1 - Very poor</option>' +
+                 '</select></div>' +
+               '<div class="mb-3"><label class="form-label">Your comments</label><textarea class="form-control" id="fbComments" rows="4" required></textarea></div>' +
+               '<button type="submit" class="btn btn-primary w-100">Send Feedback</button>' +
+             '</form>';
+    }
+
+    if (currentTab == "Help Desk") {
+      for (var i = 0; i < services.helpdesk.length; i++) {
+        var h = services.helpdesk[i];
+        html += '<div class="card-lite">' +
+                  '<b>' + esc(h.title) + '</b>' +
+                  '<div class="small text-muted mb-2">' + esc(h.timings) + '</div>' +
+                  '<a class="btn btn-sm btn-outline-primary me-1" href="tel:' + esc(h.phone.replace(/ /g, "")) + '"><i class="bi bi-telephone"></i> ' + esc(h.phone) + '</a>' +
+                  '<a class="btn btn-sm btn-outline-primary" href="mailto:' + esc(h.email) + '"><i class="bi bi-envelope"></i> Email</a>' +
+                '</div>';
+      }
+    }
+
+    if (currentTab == "My Requests") {
+      var requests = getMyRequests();
+      for (var i = 0; i < requests.length; i++) {
+        var r = requests[i];
+        html += '<div class="card-lite">' +
+                  '<div class="d-flex justify-content-between"><b>' + esc(requestTitle(r)) + '</b><span class="badge text-bg-info">' + esc(r.status) + '</span></div>' +
+                  '<div class="small text-muted">' + esc(r.id) + ' &middot; ' + formatDate(r.date) + '</div>' +
+                '</div>';
+      }
+      if (html == "") {
+        html = emptyBox("You have not sent any request yet.");
+      }
+    }
+
+    document.getElementById("content").innerHTML = html;
+    connectForms();
+  }
+
+  // A short title for a saved request
+  function requestTitle(r) {
+    if (r.type == "certificate") { return "Certificate: " + r.details.name; }
+    if (r.type == "grievance") { return "Grievance: " + r.details.subject; }
+    return "Feedback (" + r.details.rating + "/5)";
+  }
+
+  // Shows a green message after a form is sent
+  function showSuccess(request) {
+    document.getElementById("message").innerHTML =
+      '<div class="alert alert-success">Sent successfully. Your request number is <b>' + esc(request.id) + '</b>.</div>';
+    window.scrollTo(0, 0);
+  }
+
+  // Connects the forms on the screen to the code that sends them
+  function connectForms() {
+    var certificateForm = document.getElementById("certificateForm");
+    if (certificateForm) {
+      certificateForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        var request = await sendRequest("certificate", {
+          name: document.getElementById("certName").value,
+          purpose: document.getElementById("certPurpose").value.trim()
+        });
+        certificateForm.reset();
+        showSuccess(request);
+      });
+    }
+
+    var grievanceForm = document.getElementById("grievanceForm");
+    if (grievanceForm) {
+      grievanceForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        var request = await sendRequest("grievance", {
+          category: document.getElementById("grvType").value,
+          subject: document.getElementById("grvSubject").value.trim(),
+          details: document.getElementById("grvDetails").value.trim()
+        });
+        grievanceForm.reset();
+        showSuccess(request);
+      });
+    }
+
+    var feedbackForm = document.getElementById("feedbackForm");
+    if (feedbackForm) {
+      feedbackForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        var request = await sendRequest("feedback", {
+          rating: document.getElementById("fbRating").value,
+          comments: document.getElementById("fbComments").value.trim()
+        });
+        feedbackForm.reset();
+        showSuccess(request);
+      });
+    }
+  }
+
+  async function start() {
+    services = await getData("services");
+
+    // The page address can ask for a tab: services.html?tab=Grievance
+    var wanted = getParam("tab");
+    if (TABS.indexOf(wanted) != -1) {
+      currentTab = wanted;
+    }
+
+    showTabs();
+    showTabContent();
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

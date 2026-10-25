@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>My Profile - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+  <main class="app-main" id="content"><div class="loading-box">Loading...</div></main>
+  <div id="bottomnav"></div>
+</div>
+
+<!-- Form to change the allowed details -->
+<div class="modal fade" id="editModal" tabindex="-1">
+  <div class="modal-dialog sheet modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title">Update Contact Details</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="editForm">
+        <div class="modal-body">
+          <p class="small text-muted">You can change only your email, mobile number and address. For other changes, meet the examination cell.</p>
+          <div class="mb-3">
+            <label class="form-label" for="editEmail">Email</label>
+            <input type="email" class="form-control" id="editEmail" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="editMobile">Mobile Number</label>
+            <input type="tel" class="form-control" id="editMobile" pattern="[0-9]{10}" title="Enter 10 digits" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="editAddress">Address</label>
+            <textarea class="form-control" id="editAddress" rows="3" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary w-100">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "My Profile", active: "more", back: true });
+
+  var me = null;
+
+  // One line: label on the left, value on the right
+  function infoRow(label, value) {
+    return '<div class="info-row"><span class="info-label">' + label + '</span><span class="info-value">' + esc(value) + '</span></div>';
+  }
+
+  function showProfile() {
+    var html = '<div class="text-center mb-3">' +
+                 '<div class="avatar">' + initials(me.name) + '</div>' +
+                 '<h5 class="mb-0">' + esc(me.name) + '</h5>' +
+                 '<div class="text-muted">' + esc(me.roll) + '</div>' +
+               '</div>';
+
+    html += '<div class="section-title">Personal</div><div class="card-lite">' +
+              infoRow("Name", me.name) +
+              infoRow("Roll Number", me.roll) +
+              infoRow("Date of Birth", formatDate(me.dob)) +
+              infoRow("Gender", me.gender) +
+              infoRow("Category", me.category) +
+              infoRow("Branch", me.department) +
+              infoRow("Year / Semester", me.year + " Year / " + me.semester + " Sem") +
+              infoRow("Section", me.section) +
+              infoRow("Regulation", me.regulation) +
+            '</div>';
+
+    html += '<div class="section-title">Contact</div><div class="card-lite">' +
+              infoRow("Email", me.email) +
+              infoRow("Mobile", me.mobile) +
+              infoRow("Address", me.address) +
+              infoRow("Blood Group", me.bloodGroup) +
+              infoRow("Parent / Guardian", me.parentName) +
+              infoRow("Parent Mobile", me.parentMobile) +
+              infoRow("Emergency Contact", me.emergencyContact) +
+            '</div>';
+
+    html += '<button class="btn btn-primary w-100" onclick="openEdit()"><i class="bi bi-pencil"></i> Update Contact Details</button>';
+
+    document.getElementById("content").innerHTML = html;
+  }
+
+  // Fill the form with the current values and open it
+  function openEdit() {
+    document.getElementById("editEmail").value = me.email;
+    document.getElementById("editMobile").value = me.mobile;
+    document.getElementById("editAddress").value = me.address;
+    new bootstrap.Modal(document.getElementById("editModal")).show();
+  }
+
+  document.getElementById("editForm").addEventListener("submit", async function (event) {
+    event.preventDefault();
+    await updateMyProfile(
+      document.getElementById("editEmail").value.trim(),
+      document.getElementById("editMobile").value.trim(),
+      document.getElementById("editAddress").value.trim()
+    );
+    bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
+    me = await getMyProfile();   // read the details again
+    showProfile();
+  });
+
+  async function start() {
+    me = await getMyProfile();
+    showProfile();
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

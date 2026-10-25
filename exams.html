@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Examinations - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+  <main class="app-main" id="content"><div class="loading-box">Loading...</div></main>
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Examinations", active: "exams", back: false });
+
+  // All the pages of the examination module
+  var EXAM_LINKS = [
+    { name: "Academic Calendar", note: "Holidays, exams, important dates", icon: "bi-calendar3", color: "chip-teal", link: "calendar.html" },
+    { name: "Examination Timetable", note: "Dates and sessions", icon: "bi-table", color: "chip-blue", link: "timetable.html" },
+    { name: "Hall Ticket", note: "View and print", icon: "bi-ticket-perforated", color: "chip-amber", link: "hallticket.html" },
+    { name: "Results", note: "Semester wise results and CGPA", icon: "bi-award", color: "chip-green", link: "results.html" },
+    { name: "Internal Marks", note: "Mid, assignment and total", icon: "bi-clipboard-data", color: "chip-purple", link: "marks.html" },
+    { name: "Regulations", note: "R16, R19, R20, R23, R25", icon: "bi-book", color: "chip-red", link: "regulations.html" },
+    { name: "Examination Notifications", note: "Latest exam updates", icon: "bi-bell", color: "chip-amber", link: "notifications.html?category=Examination" },
+    { name: "Forms Download", note: "Revaluation, recounting and more", icon: "bi-file-earmark-arrow-down", color: "chip-blue", link: "documents.html?folder=Examination Forms" }
+  ];
+
+  async function start() {
+    var timetable = await getData("exam_timetable");
+
+    // Find the next exam from today
+    var today = todayText();
+    var next = null;
+    for (var i = 0; i < timetable.exams.length; i++) {
+      if (timetable.exams[i].date >= today && next == null) {
+        next = timetable.exams[i];
+      }
+    }
+
+    var html = "";
+
+    if (next != null) {
+      html += '<div class="hero">' +
+                '<small>Next examination</small>' +
+                '<h2>' + esc(next.subject) + '</h2>' +
+                '<span class="hero-info"><i class="bi bi-calendar-event"></i> ' + formatDate(next.date) + '</span>' +
+                '<span class="hero-info">' + esc(next.session) + '</span>' +
+              '</div>';
+    } else {
+      html += '<div class="hero"><small>Next examination</small><h2>No exam scheduled</h2></div>';
+    }
+
+    html += '<div class="section-title">Examination Module</div>';
+    for (var i = 0; i < EXAM_LINKS.length; i++) {
+      var item = EXAM_LINKS[i];
+      html += '<a class="list-row" href="' + item.link + '">' +
+                '<div class="icon-chip ' + item.color + '"><i class="bi ' + item.icon + '"></i></div>' +
+                '<div class="row-text"><div class="row-title">' + item.name + '</div><div class="row-sub">' + item.note + '</div></div>' +
+                '<i class="bi bi-chevron-right"></i>' +
+              '</a>';
+    }
+
+    document.getElementById("content").innerHTML = html;
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

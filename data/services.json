@@ -1,0 +1,16 @@
+{
+  "certificates": [
+    { "id": "bonafide", "name": "Bonafide Certificate", "fee": 100, "days": 2 },
+    { "id": "study", "name": "Study Certificate", "fee": 100, "days": 2 },
+    { "id": "conduct", "name": "Conduct Certificate", "fee": 100, "days": 3 },
+    { "id": "tc", "name": "Transfer Certificate", "fee": 200, "days": 7 },
+    { "id": "provisional", "name": "Provisional Certificate", "fee": 500, "days": 7 }
+  ],
+  "helpdesk": [
+    { "title": "Examination Cell", "person": "Exam Cell Office", "phone": "08514 000001", "email": "examcell@example.com", "timings": "Mon-Sat, 10:00 AM - 4:00 PM" },
+    { "title": "Accounts Section", "person": "Accounts Office", "phone": "08514 000002", "email": "accounts@example.com", "timings": "Mon-Sat, 10:00 AM - 4:00 PM" },
+    { "title": "Hostel Warden", "person": "Chief Warden", "phone": "08514 000003", "email": "warden@example.com", "timings": "All days, 9:00 AM - 6:00 PM" },
+    { "title": "Transport Office", "person": "Transport In-charge", "phone": "08514 000004", "email": "transport@example.com", "timings": "Mon-Sat, 9:00 AM - 5:00 PM" }
+  ],
+  "grievanceTypes": ["Academic", "Examination", "Fee", "Hostel", "Transport", "Other"]
+}

@@ -1,0 +1,19 @@
+{
+  "available": true,
+  "examName": "B.Tech III Year I Semester Regular Examinations - Dec 2026",
+  "centre": "RGM College of Engineering and Technology, Nandyal",
+  "pdf": "pdfs/hallticket_III_I.pdf",
+  "subjects": [
+    { "date": "2026-12-14", "session": "Forenoon", "code": "CS501", "name": "Database Management Systems" },
+    { "date": "2026-12-16", "session": "Forenoon", "code": "CS502", "name": "Operating Systems" },
+    { "date": "2026-12-18", "session": "Forenoon", "code": "CS503", "name": "Computer Networks" },
+    { "date": "2026-12-21", "session": "Forenoon", "code": "CS504", "name": "Software Engineering" },
+    { "date": "2026-12-23", "session": "Forenoon", "code": "CS505", "name": "Formal Languages and Automata Theory" }
+  ],
+  "instructions": [
+    "Carry the hall ticket and the college ID card to every exam.",
+    "Reach the exam hall 30 minutes before the start time.",
+    "Mobile phones and smart watches are not allowed inside the hall.",
+    "Students without a hall ticket will not be allowed to write the exam."
+  ]
+}

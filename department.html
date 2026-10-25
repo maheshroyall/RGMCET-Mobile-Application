@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Department - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+  <main class="app-main" id="content"><div class="loading-box">Loading...</div></main>
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Department", active: "more", back: true });
+
+  var code = getParam("code");          // example: CSE (comes from the page address)
+  var department = null;
+  var currentTab = "Circulars";
+  var TABS = ["Circulars", "Activities", "Events", "Faculty", "Achievements"];
+
+  // The lists of this department
+  var circulars = [];
+  var activities = [];
+  var events = [];
+  var faculty = [];
+  var achievements = [];
+
+  function showTabs() {
+    var html = "";
+    for (var i = 0; i < TABS.length; i++) {
+      var activeClass = "";
+      if (TABS[i] == currentTab) {
+        activeClass = " active";
+      }
+      html += '<button class="pill-tab' + activeClass + '" onclick="chooseTab(\'' + TABS[i] + '\')">' + TABS[i] + '</button>';
+    }
+    document.getElementById("tabs").innerHTML = html;
+  }
+
+  function chooseTab(name) {
+    currentTab = name;
+    showTabs();
+    showTabContent();
+  }
+
+  // Shows the list for the selected tab
+  function showTabContent() {
+    var html = "";
+
+    if (currentTab == "Circulars") {
+      for (var i = 0; i < circulars.length; i++) {
+        var c = circulars[i];
+        html += '<div class="card-lite">' +
+                  '<div class="d-flex justify-content-between align-items-start"><b>' + esc(c.title) + '</b>' + priorityBadge(c.priority) + '</div>' +
+                  '<div class="small text-muted mb-1">' + formatDate(c.publishDate) + ' &middot; ' + esc(c.number) + '</div>' +
+                  '<p class="mb-2 small">' + esc(c.description) + '</p>' + fileButtons(c.attachment) +
+                '</div>';
+      }
+    }
+
+    if (currentTab == "Activities") {
+      for (var i = 0; i < activities.length; i++) {
+        var a = activities[i];
+        html += '<div class="card-lite">' +
+                  '<span class="badge text-bg-info mb-1">' + esc(a.type) + '</span>' +
+                  '<div><b>' + esc(a.title) + '</b></div>' +
+                  '<div class="small text-muted mb-1">' + formatDate(a.date) + '</div>' +
+                  '<p class="mb-0 small">' + esc(a.description) + '</p>' +
+                '</div>';
+      }
+    }
+
+    if (currentTab == "Events") {
+      for (var i = 0; i < events.length; i++) {
+        var e = events[i];
+        var photo = "";
+        if (e.photo) {
+          photo = '<img class="event-photo" src="' + esc(e.photo) + '" alt="Event photo">';
+        }
+        var register = "";
+        if (e.registrationLink) {
+          register = '<a class="btn btn-sm btn-success me-1" href="' + esc(e.registrationLink) + '" target="_blank">Register</a>';
+        }
+        var reportButton = "";
+        if (e.reportPdf) {
+          reportButton = '<a class="btn btn-sm btn-outline-primary" href="' + esc(e.reportPdf) + '" target="_blank"><i class="bi bi-file-earmark-pdf"></i> Report</a>';
+        }
+        html += '<div class="card-lite">' + photo +
+                  '<div><b>' + esc(e.title) + '</b></div>' +
+                  '<div class="small text-muted"><i class="bi bi-calendar-event"></i> ' + formatDate(e.date) + ' &nbsp; <i class="bi bi-geo-alt"></i> ' + esc(e.venue) + '</div>' +
+                  '<div class="small text-muted mb-1">Organizer: ' + esc(e.organizer) + '</div>' +
+                  '<p class="mb-2 small">' + esc(e.description) + '</p>' + register + reportButton +
+                '</div>';
+      }
+    }
+
+    if (currentTab == "Faculty") {
+      for (var i = 0; i < faculty.length; i++) {
+        var f = faculty[i];
+        html += '<div class="list-row">' +
+                  '<div class="icon-chip chip-purple"><b>' + initials(f.name.replace("Dr. ", "").replace("Mr. ", "").replace("Ms. ", "")) + '</b></div>' +
+                  '<div class="row-text">' +
+                    '<div class="row-title">' + esc(f.name) + '</div>' +
+                    '<div class="row-sub">' + esc(f.designation) + ' &middot; ' + esc(f.qualification) + '</div>' +
+                    '<div class="row-sub">Research: ' + esc(f.research) + '</div>' +
+                    '<a class="small" href="mailto:' + esc(f.email) + '">' + esc(f.email) + '</a>' +
+                  '</div>' +
+                '</div>';
+      }
+    }
+
+    if (currentTab == "Achievements") {
+      for (var i = 0; i < achievements.length; i++) {
+        var a = achievements[i];
+        html += '<div class="list-row align-items-start">' +
+                  '<div class="icon-chip chip-amber"><i class="bi bi-trophy"></i></div>' +
+                  '<div class="row-text">' +
+                    '<div class="row-title">' + esc(a.title) + '</div>' +
+                    '<div class="row-sub">' + esc(a.name) + ' &middot; ' + formatDate(a.date) + '</div>' +
+                    '<div class="small mt-1">' + esc(a.description) + '</div>' +
+                    '<span class="badge text-bg-light border mt-1">' + esc(a.who) + '</span> ' +
+                    '<span class="badge text-bg-light border mt-1">' + esc(a.category) + '</span>' +
+                  '</div>' +
+                '</div>';
+      }
+    }
+
+    if (html == "") {
+      html = emptyBox("Nothing to show here yet.");
+    }
+    document.getElementById("tabContent").innerHTML = html;
+  }
+
+  // Keeps only the items that belong to this department
+  function onlyThisDepartment(list) {
+    var result = [];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].department == code) {
+        result.push(list[i]);
+      }
+    }
+    return result;
+  }
+
+  async function start() {
+    var departments = await getData("departments");
+    for (var i = 0; i < departments.length; i++) {
+      if (departments[i].code == code) {
+        department = departments[i];
+      }
+    }
+    if (department == null) {
+      document.getElementById("content").innerHTML = emptyBox("Department not found.");
+      return;
+    }
+
+    // Department circulars are the circulars of type "Department"
+    var allCirculars = await getData("circulars");
+    for (var i = 0; i < allCirculars.length; i++) {
+      if (allCirculars[i].type == "Department" && allCirculars[i].department == code) {
+        circulars.push(allCirculars[i]);
+      }
+    }
+    activities = onlyThisDepartment(await getData("activities"));
+    events = onlyThisDepartment(await getData("events"));
+    faculty = onlyThisDepartment(await getData("faculty"));
+    achievements = onlyThisDepartment(await getData("achievements"));
+
+    document.getElementById("content").innerHTML =
+      '<div class="hero">' +
+        '<small>Department of</small>' +
+        '<h2>' + esc(department.name) + '</h2>' +
+        '<span class="hero-info">HOD: ' + esc(department.hod) + '</span>' +
+      '</div>' +
+      '<p class="small text-muted mt-2">' + esc(department.about) + '</p>' +
+      '<div class="pill-tabs" id="tabs"></div>' +
+      '<div id="tabContent"></div>';
+
+    showTabs();
+    showTabContent();
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

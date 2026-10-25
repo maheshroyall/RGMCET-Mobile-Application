@@ -1,0 +1,55 @@
+{
+  "cgpa": 8.12,
+  "semesters": [
+    {
+      "semester": "II-II",
+      "exam": "Regular - Jun 2026",
+      "sgpa": 8.4,
+      "pdf": "pdfs/result_II_II.pdf",
+      "subjects": [
+        { "code": "CS401", "name": "Design and Analysis of Algorithms", "grade": "A", "credits": 3, "result": "Pass" },
+        { "code": "CS402", "name": "Object Oriented Programming through Java", "grade": "A+", "credits": 3, "result": "Pass" },
+        { "code": "CS403", "name": "Digital Logic and Computer Organization", "grade": "B+", "credits": 3, "result": "Pass" },
+        { "code": "CS404", "name": "Probability and Statistics", "grade": "A", "credits": 3, "result": "Pass" },
+        { "code": "CS405", "name": "Java Programming Lab", "grade": "O", "credits": 1.5, "result": "Pass" }
+      ]
+    },
+    {
+      "semester": "II-I",
+      "exam": "Regular - Jan 2026",
+      "sgpa": 8.1,
+      "pdf": "pdfs/result_II_I.pdf",
+      "subjects": [
+        { "code": "CS301", "name": "Data Structures", "grade": "A", "credits": 3, "result": "Pass" },
+        { "code": "CS302", "name": "Discrete Mathematics", "grade": "B+", "credits": 3, "result": "Pass" },
+        { "code": "CS303", "name": "Python Programming", "grade": "A+", "credits": 3, "result": "Pass" },
+        { "code": "CS304", "name": "Digital Electronics", "grade": "B", "credits": 3, "result": "Pass" },
+        { "code": "CS305", "name": "Data Structures Lab", "grade": "O", "credits": 1.5, "result": "Pass" }
+      ]
+    },
+    {
+      "semester": "I-II",
+      "exam": "Regular - Jun 2025",
+      "sgpa": 7.9,
+      "pdf": "pdfs/result_I_II.pdf",
+      "subjects": [
+        { "code": "CS201", "name": "Engineering Physics", "grade": "B+", "credits": 3, "result": "Pass" },
+        { "code": "CS202", "name": "Programming in C", "grade": "A", "credits": 3, "result": "Pass" },
+        { "code": "CS203", "name": "Engineering Drawing", "grade": "B", "credits": 2, "result": "Pass" },
+        { "code": "CS204", "name": "Linear Algebra and Calculus", "grade": "B+", "credits": 3, "result": "Pass" }
+      ]
+    },
+    {
+      "semester": "I-I",
+      "exam": "Regular - Jan 2025",
+      "sgpa": 8.0,
+      "pdf": "pdfs/result_I_I.pdf",
+      "subjects": [
+        { "code": "CS101", "name": "Communicative English", "grade": "A", "credits": 3, "result": "Pass" },
+        { "code": "CS102", "name": "Engineering Chemistry", "grade": "B+", "credits": 3, "result": "Pass" },
+        { "code": "CS103", "name": "Basic Electrical Engineering", "grade": "B+", "credits": 3, "result": "Pass" },
+        { "code": "CS104", "name": "Mathematics I", "grade": "A", "credits": 3, "result": "Pass" }
+      ]
+    }
+  ]
+}

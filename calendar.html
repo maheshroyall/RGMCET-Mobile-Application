@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Academic Calendar - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+  <main class="app-main" id="content"><div class="loading-box">Loading...</div></main>
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Academic Calendar", active: "exams", back: true });
+
+  // Colour and icon for each type of event
+  var EVENT_STYLE = {
+    "Holiday":  { color: "chip-red",   icon: "bi-brightness-high" },
+    "Exam":     { color: "chip-amber", icon: "bi-pencil-square" },
+    "Academic": { color: "chip-blue",  icon: "bi-mortarboard" },
+    "Event":    { color: "chip-green", icon: "bi-stars" }
+  };
+
+  var calendar = null;
+  var currentFilter = "All";
+  var FILTERS = ["All", "Academic", "Exam", "Holiday", "Event"];
+
+  function showFilters() {
+    var html = "";
+    for (var i = 0; i < FILTERS.length; i++) {
+      var activeClass = "";
+      if (FILTERS[i] == currentFilter) {
+        activeClass = " active";
+      }
+      html += '<button class="pill-tab' + activeClass + '" onclick="chooseFilter(\'' + FILTERS[i] + '\')">' + FILTERS[i] + '</button>';
+    }
+    document.getElementById("filterTabs").innerHTML = html;
+  }
+
+  function chooseFilter(name) {
+    currentFilter = name;
+    showFilters();
+    showEvents();
+  }
+
+  // Shows the events, with a month heading each time the month changes
+  function showEvents() {
+    var html = "";
+    var lastMonth = "";
+    var today = todayText();
+
+    for (var i = 0; i < calendar.events.length; i++) {
+      var e = calendar.events[i];
+      if (currentFilter != "All" && e.type != currentFilter) {
+        continue;
+      }
+
+      var month = e.date.substring(0, 7);   // example: "2026-10"
+      if (month != lastMonth) {
+        var parts = month.split("-");
+        html += '<div class="section-title">' + MONTH_NAMES[Number(parts[1]) - 1] + ' ' + parts[0] + '</div>';
+        lastMonth = month;
+      }
+
+      var style = EVENT_STYLE[e.type] || EVENT_STYLE["Academic"];
+      var passed = "";
+      if (e.date < today) {
+        passed = ' style="opacity:0.55"';
+      }
+
+      html += '<div class="list-row"' + passed + '>' +
+                '<div class="icon-chip ' + style.color + '"><i class="bi ' + style.icon + '"></i></div>' +
+                '<div class="row-text"><div class="row-title">' + esc(e.title) + '</div>' +
+                '<div class="row-sub">' + formatDate(e.date) + ' &middot; ' + esc(e.type) + '</div></div>' +
+              '</div>';
+    }
+
+    if (html == "") {
+      html = emptyBox("No events found.");
+    }
+    document.getElementById("eventList").innerHTML = html;
+  }
+
+  async function start() {
+    calendar = await getData("calendar");
+
+    document.getElementById("content").innerHTML =
+      '<div class="card-lite">' +
+        '<b>Academic Year ' + esc(calendar.year) + '</b>' +
+        '<div class="text-muted small mb-2">Official calendar (PDF)</div>' +
+        fileButtons(calendar.pdf) +
+      '</div>' +
+      '<div class="pill-tabs" id="filterTabs"></div>' +
+      '<div id="eventList"></div>';
+
+    showFilters();
+    showEvents();
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

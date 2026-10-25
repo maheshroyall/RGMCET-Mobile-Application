@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Discipline - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+  <main class="app-main" id="content"><div class="loading-box">Loading...</div></main>
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Discipline", active: "more", back: true });
+
+  // The steps of a disciplinary case, in order
+  var STEPS = ["Reported", "Under Review", "Notice Issued", "Committee Review", "Action Taken", "Closed"];
+
+  // Makes the list of steps. Steps before the current one are "done".
+  function makeTimeline(status) {
+    var position = STEPS.indexOf(status);
+    var html = '<ul class="timeline">';
+    for (var i = 0; i < STEPS.length; i++) {
+      var cssClass = "";
+      if (i < position || status == "Closed") {
+        cssClass = "done";
+      } else if (i == position) {
+        cssClass = "now";
+      }
+      html += '<li class="' + cssClass + '">' + STEPS[i] + '</li>';
+    }
+    return html + '</ul>';
+  }
+
+  function infoRow(label, value) {
+    if (!value) {
+      return "";
+    }
+    return '<div class="info-row"><span class="info-label">' + label + '</span><span class="info-value">' + esc(value) + '</span></div>';
+  }
+
+  async function start() {
+    var cases = await getData("discipline");
+
+    if (cases.length == 0) {
+      document.getElementById("content").innerHTML =
+        '<div class="empty-box"><i class="bi bi-patch-check"></i><p>You have no disciplinary records.</p></div>';
+      return;
+    }
+
+    var html = "";
+    for (var i = 0; i < cases.length; i++) {
+      var c = cases[i];
+
+      var badge = "text-bg-warning";
+      if (c.status == "Closed") {
+        badge = "text-bg-success";
+      }
+
+      html += '<div class="card-lite">' +
+                '<div class="d-flex justify-content-between align-items-start mb-2">' +
+                  '<div><b>' + esc(c.incidentType) + '</b><div class="small text-muted">' + esc(c.caseId) + '</div></div>' +
+                  '<span class="badge ' + badge + '">' + esc(c.status) + '</span>' +
+                '</div>' +
+                '<p class="small">' + esc(c.description) + '</p>' +
+                infoRow("Date", formatDate(c.date)) +
+                infoRow("Reported by", c.reportedBy) +
+                infoRow("HOD remarks", c.hodRemarks) +
+                infoRow("Committee remarks", c.committeeRemarks) +
+                infoRow("Action taken", c.actionTaken) +
+                infoRow("Review date", c.reviewDate ? formatDate(c.reviewDate) : "") +
+                infoRow("Closure date", c.closureDate ? formatDate(c.closureDate) : "") +
+                '<div class="section-title mt-3">Progress</div>' + makeTimeline(c.status) +
+                '<div>' + fileButtons(c.document) + '</div>' +
+              '</div>';
+    }
+
+    document.getElementById("content").innerHTML = html;
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a3990">
+  <title>Results - RGMCET</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="topbar"></div>
+  <main class="app-main" id="content"><div class="loading-box">Loading...</div></main>
+  <div id="bottomnav"></div>
+</div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  setupPage({ title: "Results", active: "exams", back: true });
+
+  async function start() {
+    var results = await getData("results");
+
+    var html = '<div class="hero">' +
+                 '<small>Cumulative Grade Point Average</small>' +
+                 '<h2>CGPA ' + results.cgpa + '</h2>' +
+                 '<span class="hero-info">' + results.semesters.length + ' semesters completed</span>' +
+               '</div>';
+
+    html += '<div class="section-title">Semester Results</div>';
+    html += '<div class="accordion" id="resultAccordion">';
+
+    for (var i = 0; i < results.semesters.length; i++) {
+      var s = results.semesters[i];
+
+      // Table of subjects
+      var rows = "";
+      for (var j = 0; j < s.subjects.length; j++) {
+        var sub = s.subjects[j];
+        var resultClass = "text-success";
+        if (sub.result != "Pass") {
+          resultClass = "text-danger";
+        }
+        rows += '<tr>' +
+                  '<td>' + esc(sub.name) + '<div class="text-muted small">' + esc(sub.code) + '</div></td>' +
+                  '<td><b>' + esc(sub.grade) + '</b></td>' +
+                  '<td>' + sub.credits + '</td>' +
+                  '<td class="' + resultClass + '">' + esc(sub.result) + '</td>' +
+                '</tr>';
+      }
+
+      // Only the first (latest) semester is open at the start
+      var show = "";
+      var collapsed = " collapsed";
+      if (i == 0) {
+        show = " show";
+        collapsed = "";
+      }
+
+      html += '<div class="accordion-item">' +
+                '<h2 class="accordion-header">' +
+                  '<button class="accordion-button' + collapsed + '" type="button" data-bs-toggle="collapse" data-bs-target="#sem' + i + '">' +
+                    '<div><b>' + esc(s.semester) + ' Semester</b><div class="text-muted small">' + esc(s.exam) + '</div></div>' +
+                    '<span class="badge text-bg-success ms-auto me-2">SGPA ' + s.sgpa + '</span>' +
+                  '</button>' +
+                '</h2>' +
+                '<div id="sem' + i + '" class="accordion-collapse collapse' + show + '" data-bs-parent="#resultAccordion">' +
+                  '<div class="accordion-body p-2">' +
+                    '<div class="table-box"><table class="table table-sm align-middle">' +
+                      '<thead><tr><th>Subject</th><th>Grade</th><th>Credits</th><th>Result</th></tr></thead>' +
+                      '<tbody>' + rows + '</tbody>' +
+                    '</table></div>' +
+                    '<div class="mt-2 mb-1">' + fileButtons(s.pdf) + '</div>' +
+                  '</div>' +
+                '</div>' +
+              '</div>';
+    }
+    html += '</div>';
+
+    document.getElementById("content").innerHTML = html;
+  }
+
+  runPage(start);
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "department": "CSE",
+    "title": "CodeSprint 2026 - 48 Hour Hackathon",
+    "date": "2026-11-07",
+    "venue": "CSE Seminar Hall",
+    "organizer": "CSE Department and Coding Club",
+    "description": "A 48 hour hackathon where teams of 4 build a working project. Prizes for the top three teams.",
+    "photo": "images/event_hackathon.jpg",
+    "reportPdf": "pdfs/event_report_1.pdf",
+    "registrationLink": "https://example.com/register/codesprint"
+  },
+  {
+    "id": 2,
+    "department": "CSE",
+    "title": "Guest Lecture on Cloud Computing",
+    "date": "2026-09-19",
+    "venue": "Main Auditorium",
+    "organizer": "CSE Department",
+    "description": "A talk by an industry expert on cloud computing and how to start a career in it.",
+    "photo": "images/event_lecture.jpg",
+    "reportPdf": "pdfs/event_report_2.pdf",
+    "registrationLink": ""
+  },
+  {
+    "id": 3,
+    "department": "ECE",
+    "title": "VLSI Design Workshop",
+    "date": "2026-10-25",
+    "venue": "ECE Lab Block",
+    "organizer": "ECE Department",
+    "description": "Two day workshop on VLSI design with hands-on practice.",
+    "photo": "images/event_workshop.jpg",
+    "reportPdf": "",
+    "registrationLink": "https://example.com/register/vlsi"
+  },
+  {
+    "id": 4,
+    "department": "MECH",
+    "title": "3D Printing Workshop",
+    "date": "2026-10-08",
+    "venue": "Mechanical Workshop",
+    "organizer": "Mechanical Department",
+    "description": "Basics of 3D modelling and printing for first and second year students.",
+    "photo": "images/event_workshop.jpg",
+    "reportPdf": "",
+    "registrationLink": ""
+  },
+  {
+    "id": 5,
+    "department": "EEE",
+    "title": "Electrical Circuit Design Contest",
+    "date": "2026-09-27",
+    "venue": "EEE Seminar Hall",
+    "organizer": "EEE Department",
+    "description": "Student contest on designing low power circuits.",
+    "photo": "",
+    "reportPdf": "",
+    "registrationLink": ""
+  }
+]

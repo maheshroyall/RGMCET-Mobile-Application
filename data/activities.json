@@ -1,0 +1,10 @@
+[
+  { "id": 1, "department": "CSE", "type": "Workshop", "title": "Web Development Workshop", "date": "2026-09-05", "description": "Hands-on workshop on HTML, CSS and JavaScript for II and III year students." },
+  { "id": 2, "department": "CSE", "type": "Guest Lecture", "title": "Guest Lecture on Cloud Computing", "date": "2026-09-19", "description": "Industry expert session on cloud basics and career paths." },
+  { "id": 3, "department": "CSE", "type": "Industrial Visit", "title": "Visit to Software Company, Hyderabad", "date": "2026-11-12", "description": "One day visit to see real software projects and teams at work." },
+  { "id": 4, "department": "ECE", "type": "FDP", "title": "Faculty Development Program on Embedded Systems", "date": "2026-08-24", "description": "Five day FDP for faculty from nearby colleges." },
+  { "id": 5, "department": "ECE", "type": "Seminar", "title": "Seminar on 5G Communication", "date": "2026-10-03", "description": "Overview of 5G networks and their use cases." },
+  { "id": 6, "department": "EEE", "type": "Competition", "title": "Electrical Circuit Design Contest", "date": "2026-09-27", "description": "Student contest on designing low power circuits." },
+  { "id": 7, "department": "MECH", "type": "Workshop", "title": "3D Printing Workshop", "date": "2026-10-08", "description": "Learn the basics of 3D modelling and printing." },
+  { "id": 8, "department": "CIVIL", "type": "Industrial Visit", "title": "Site Visit to Highway Construction", "date": "2026-10-14", "description": "Students visited an ongoing highway project near Nandyal." }
+]

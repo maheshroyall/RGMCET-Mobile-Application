@@ -1,0 +1,19 @@
+[
+  { "id": 1, "folder": "Circulars", "title": "Semester Registration and Examination Fee Notification", "type": "PDF", "size": "20 KB", "date": "2026-10-20", "file": "pdfs/circular_008.pdf" },
+  { "id": 2, "folder": "Circulars", "title": "Last Date for College Fee Payment", "type": "PDF", "size": "20 KB", "date": "2026-10-05", "file": "pdfs/circular_004.pdf" },
+  { "id": 3, "folder": "Regulations", "title": "Academic Regulations R23", "type": "PDF", "size": "22 KB", "date": "2023-08-01", "file": "pdfs/regulations_R23.pdf" },
+  { "id": 4, "folder": "Academic Calendar", "title": "Academic Calendar 2026-27", "type": "PDF", "size": "21 KB", "date": "2026-07-20", "file": "pdfs/academic_calendar_2026_27.pdf" },
+  { "id": 5, "folder": "Timetables", "title": "Exam Timetable - Dec 2026", "type": "PDF", "size": "21 KB", "date": "2026-10-14", "file": "pdfs/exam_timetable_III_I_dec2026.pdf" },
+  { "id": 6, "folder": "Results", "title": "Result Memo II-II Semester", "type": "PDF", "size": "20 KB", "date": "2026-07-15", "file": "pdfs/result_II_II.pdf" },
+  { "id": 7, "folder": "Results", "title": "Result Memo II-I Semester", "type": "PDF", "size": "20 KB", "date": "2026-02-20", "file": "pdfs/result_II_I.pdf" },
+  { "id": 8, "folder": "Fee Receipts", "title": "Fee Receipt - College Fee 2026-27 (Part 1)", "type": "PDF", "size": "20 KB", "date": "2026-08-10", "file": "pdfs/receipt_001.pdf" },
+  { "id": 9, "folder": "Fee Receipts", "title": "Fee Receipt - Bus Fee 2026-27", "type": "PDF", "size": "20 KB", "date": "2026-08-05", "file": "pdfs/receipt_003.pdf" },
+  { "id": 10, "folder": "Department Documents", "title": "CSE Syllabus - R23", "type": "PDF", "size": "20 KB", "date": "2023-08-01", "file": "pdfs/syllabus_cse_R23.pdf" },
+  { "id": 11, "folder": "Department Documents", "title": "Sample ID Card", "type": "JPG", "size": "30 KB", "date": "2026-08-01", "file": "files/id_card_sample.jpg" },
+  { "id": 12, "folder": "Examination Documents", "title": "Hall Ticket - III-I Dec 2026", "type": "PDF", "size": "20 KB", "date": "2026-12-01", "file": "pdfs/hallticket_III_I.pdf" },
+  { "id": 13, "folder": "Examination Forms", "title": "Revaluation Application Form", "type": "PDF", "size": "20 KB", "date": "2026-01-10", "file": "pdfs/form_revaluation.pdf" },
+  { "id": 14, "folder": "Examination Forms", "title": "Recounting Application Form", "type": "PDF", "size": "20 KB", "date": "2026-01-10", "file": "pdfs/form_recounting.pdf" },
+  { "id": 15, "folder": "Examination Forms", "title": "Condonation of Shortage of Attendance Form", "type": "PDF", "size": "20 KB", "date": "2026-01-10", "file": "pdfs/form_condonation.pdf" },
+  { "id": 16, "folder": "Examination Forms", "title": "Supplementary Examination Form", "type": "PDF", "size": "20 KB", "date": "2026-01-10", "file": "pdfs/form_supplementary.pdf" },
+  { "id": 17, "folder": "Examination Forms", "title": "Bonafide Certificate Application", "type": "DOCX", "size": "36 KB", "date": "2026-01-10", "file": "files/bonafide_application.docx" }
+]
